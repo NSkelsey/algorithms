@@ -3,7 +3,7 @@
 # something....
 # The recurrence is T(n) = T(2n/10) + T(7n/10) when the list is of length 5
 
-A = [19, 9, 301, 2, 4, 5,
+G = [19, 9, 301, 2, 4, 5,
      12, 23, 7, 6, 200,
      43, 22, 96, 100, 8,
      101, 102, 109, 110,
@@ -11,25 +11,24 @@ A = [19, 9, 301, 2, 4, 5,
      88, 31, 250, 100, 16]
 
 
-def select(A, i): # A is a list, i is the ith element in that ordered list
+def select(A, i, d=1): # A is a list, i is the ith element in that ordered list
                   # NOTE all elements must be unique
     T = list(A); T.sort()
-    print "select on: \t", i, T
+    print "select on: ", d*'\t',i, T
     if len(A) <= 5: # Base case, just find ith element
-        list(A).sort()
-        return A[i]
-    p = medianOfMedians(A)
+        T = list(A)
+        T.sort()
+        return T[i]
+    p = medianOfMedians(A, d)
     (A_l, A_r, i_p) = partition(A, p)
     if i_p == i:
         return p
     elif i_p < i:
-        return select(A_r, i - i_p)    
+        return select(A_r, i - i_p - 1, d+1)    
     else: # i_p > i
-        return select(A_l, i)
+        return select(A_l, i, d+1)
     
-def medianOfMedians(A):
-    if len(A) == 1: # base case
-        return A
+def medianOfMedians(A,d):
     B = list()                # B will hold medians of sublists
     itrs, i = len(A)/5, 0
     for j in range(itrs): # divide list into sublists of len 5
@@ -39,10 +38,10 @@ def medianOfMedians(A):
         i += 5
     end = len(A) % 5 
     if end != 0:
-        B += A[-end:]
-    print "MoM of\t\t", B
-    p = select(B, len(A)/10)
-    print "MoM is\t\t", p
+        B.append(median(A[-end:]))
+    print "MoM of \t",d*'\t', B
+    p = select(B, len(B)/2, d+1)
+    print "MoM is \t",d*'\t', p
     return p
 
 def partition(A, p): # splits the list into left and right half where
@@ -54,17 +53,16 @@ def partition(A, p): # splits the list into left and right half where
         elif p < elem:
             A_r.append(elem)
     i_p = len(A_l)
-    print "Partition on:\t", A_l, p, A_r
     return A_l, A_r, i_p
 
 
 def median(A):  # A cheat to find the median in our base case
-    A = list(A) # copies list!
-    A.sort()
+    T = list(A) # copies list!
+    T.sort()
     if len(A) % 2 == 0:
         print "even list"
-    i = len(A)/2 #  in list of 4 selects the 3rd element
-    return A[int(i)]
+    i = len(T)/2 #  in list of 4 selects the 3rd element
+    return T[int(i)]
     
 def proof(A, i): # naive impl of select to justify correctness
     A = list(A)
@@ -74,11 +72,14 @@ def proof(A, i): # naive impl of select to justify correctness
 
 if __name__ == "__main__":
     import sys
+    from random import shuffle
     #A = [3, 4, 9, 1, 2]
     x = int(sys.argv[1])
-    proof(A, x)
+    G = range(200)
+    shuffle(G)
+    proof(G, x)
     print '='*20, "My solution", '='*20
-    print(select(A, x))
+    print(select(G, x, 1))
     B = [1, 2, 3, 4, 5, 6]
     #proof(B, 5)
 
