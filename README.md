@@ -1,4 +1,4 @@
 algorithms
 ==========
 
-Implementations of various algorithms is various languages. Enjoy
+Implementations of various algorithms in various languages. Enjoy
