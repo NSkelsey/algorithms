@@ -10,7 +10,7 @@ int power(int a, int n) {
             r = r*a;
         }
         a = a*a;
-    }
+   }
     return r;
 }
 
