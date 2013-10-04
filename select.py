@@ -18,7 +18,7 @@ def select(A, i): # A is a list, i is the ith element in that ordered list
         T = list(A)
         T.sort()
         return T[i]
-    p = medianOfMedians(A)
+    p = median_of_medians(A)
     (A_l, A_r, i_p) = partition(A, p)
     if i_p == i:
         return p
@@ -27,7 +27,7 @@ def select(A, i): # A is a list, i is the ith element in that ordered list
     else: # i_p > i
         return select(A_l, i)
     
-def medianOfMedians(A):
+def median_of_medians(A):
     B = list()                # B will hold medians of sublists
     itrs, i = len(A)/5, 0
     for j in range(itrs): # divide list into sublists of len 5
@@ -67,9 +67,13 @@ def proof(A, i): # naive impl of select to justify correctness
 if __name__ == "__main__":
     import sys
     from random import shuffle
+    if len(sys.argv) != 3:
+        print "Usage: python select.py <position> <Array size>"
+        exit(1)
     x = int(sys.argv[1])
-    G = range(0,4000,19)
+    G = range(0,int(sys.argv[2]))
     shuffle(G)
+    print "The array before selection:\n", G, "\nThe %dth element of the sorted list:"%x
     proof(G, x)
     print '='*20, "My solution", '='*20
     print(select(G, x))
