@@ -1,4 +1,4 @@
-# Select uses the median of median approach to narrow down the number of elements we
+# Select uses the median of medians approach to narrow down the number of elements we
 # are considering. It narrows the search space down by n/13 - n/5 or
 # something....
 # The recurrence is T(n) = T(2n/10) + T(7n/10) when the list is of length 5
@@ -13,7 +13,7 @@ G = [19, 9, 301, 2, 4, 5,
 
 def select(A, i): # A is a list, i is the ith element in that ordered list
                   # NOTE all elements must be unique
-    T = list(A); T.sort()
+    T = list(A)
     if len(A) <= 5: # Base case, just find ith element
         T = list(A)
         T.sort()
@@ -66,12 +66,13 @@ def proof(A, i): # naive impl of select to justify correctness
 
 if __name__ == "__main__":
     import sys
-    from random import shuffle
+    from random import shuffle, randint
     if len(sys.argv) != 3:
         print "Usage: python select.py <position> <Array size>"
         exit(1)
     x = int(sys.argv[1])
-    G = range(0,int(sys.argv[2]))
+    r = randint(1,100)
+    G = range(r,r+int(sys.argv[2]))
     shuffle(G)
     print "The array before selection:\n", G, "\nThe %dth element of the sorted list:"%x
     proof(G, x)
